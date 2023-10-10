@@ -5,7 +5,6 @@ using UnityEngine.U2D;
 
 public class JumpController : MonoBehaviour
 {
-    private Vector2 wallPos;
 
     private Rigidbody2D playerBody;
     private Animator playerAnim;
@@ -14,6 +13,7 @@ public class JumpController : MonoBehaviour
     private float referencePoint;
     private float touchMoveDelta;
     private bool touchStart;
+    public static bool gameStart;
 
 
     [SerializeField] private ArrowSizeController arrowController;
@@ -37,6 +37,7 @@ public class JumpController : MonoBehaviour
         arrow.gameObject.SetActive(false);
         touchMoveDelta = 1;
         touchStart = false;
+        gameStart = false;
 
     }
 
@@ -80,6 +81,7 @@ public class JumpController : MonoBehaviour
             }
             if ((Input.GetMouseButtonUp(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)) )
             {
+                gameStart = true;
                 touchStart = false;
                 arrow.gameObject.SetActive(false);
                 JumpPlayerTowardsTouch();

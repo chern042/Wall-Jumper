@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class PlayerLife : MonoBehaviour
+{
+
+    private Rigidbody2D playerBody;
+    private BoxCollider2D playerCollider;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerBody = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<BoxCollider2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+
+            
+            Die();
+ 
+        }
+
+    }
+
+
+    private void Die()
+    {
+        //deathSound.Play();
+        playerBody.constraints = RigidbodyConstraints2D.None;
+
+        playerBody.AddForce(new Vector2(0f, 20f), ForceMode2D.Impulse);
+        playerCollider.enabled = false;
+
+        Invoke("ResetLevel", 1f);
+        //playerAnim.SetTrigger("death");
+
+    }
+
+    private void ResetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+}

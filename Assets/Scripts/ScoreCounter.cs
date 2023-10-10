@@ -16,6 +16,7 @@ public class ScoreCounter : MonoBehaviour
     private void Start()
     {
         scoreString = "00000000000";
+        scoreText.transform.position = new Vector2(scoreText.transform.position.x, Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f)).y);
     }
 
     private void Update()

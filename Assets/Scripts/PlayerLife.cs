@@ -22,7 +22,7 @@ public class PlayerLife : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Lava"))
+        if (collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Obstacle"))
         {
 
             

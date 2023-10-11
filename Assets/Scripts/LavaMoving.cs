@@ -1,26 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LavaMoving : MonoBehaviour
 {
     private float moveSpeed = 2f;
     private Rigidbody2D rb;
-    private CompositeCollider2D lavaCollider;
     [SerializeField] private LayerMask wallLayer;
 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        lavaCollider = GetComponent<CompositeCollider2D>();
     }
 
     private void Update()
     {
         float cameraBottom = Camera.main.transform.position.y - Camera.main.orthographicSize;
 
-        Debug.Log(rb.velocity.y);
         if (JumpController.gameStart == true)
         {
             rb.velocity = new Vector2(0f, moveSpeed);
@@ -39,5 +37,20 @@ public class LavaMoving : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(2f, 0f);
+            StartCoroutine(DestroyGameObject(collision.gameObject));
+        }
+    }
 
+
+    IEnumerator DestroyGameObject(GameObject obstacle)
+    {        
+        yield return new WaitForSeconds(1);
+        Destroy(obstacle);
+
+    }
 }

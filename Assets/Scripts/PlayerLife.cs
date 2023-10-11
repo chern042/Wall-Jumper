@@ -16,11 +16,6 @@ public class PlayerLife : MonoBehaviour
         playerCollider = GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 
 
@@ -43,7 +38,7 @@ public class PlayerLife : MonoBehaviour
         //deathSound.Play();
         playerBody.constraints = RigidbodyConstraints2D.None;
 
-        playerBody.AddForce(new Vector2(0f, 20f), ForceMode2D.Impulse);
+        playerBody.AddForce(new Vector2(-1f, 4f), ForceMode2D.Impulse);
         playerCollider.enabled = false;
 
         Invoke("ResetLevel", 1f);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class ScoreCounter : MonoBehaviour
 {
@@ -16,11 +17,15 @@ public class ScoreCounter : MonoBehaviour
     private void Start()
     {
         scoreString = "00000000000";
-        scoreText.transform.position = new Vector2(scoreText.transform.position.x, Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0f)).y);
+        scoreText.transform.position = new Vector2(scoreText.transform.position.x, Camera.main.WorldToScreenPoint(Camera.main.transform.position).y*1.8f );
+
+
     }
 
     private void Update()
     {
+        scoreText.transform.position = new Vector2(scoreText.transform.position.x, Camera.main.WorldToScreenPoint(Camera.main.transform.position).y * 1.8f);
+
         score = (int)transform.position.y;
         if (score > 0 && score > previousScore)
         {

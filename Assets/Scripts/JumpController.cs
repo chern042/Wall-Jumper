@@ -56,7 +56,7 @@ public class JumpController : MonoBehaviour
 
                 playerPos = playerBody.transform.position;
                 referencePoint = Vector2.Distance(playerPos, GetTouchWorldPosition());
-                Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
+               // Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
               
                 float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
                 arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
@@ -71,8 +71,8 @@ public class JumpController : MonoBehaviour
                 float distanceFromPlayer1 = CalculateResultVector(playerPos, GetTouchWorldPosition()).magnitude;
                 touchMoveDelta = distanceFromPlayer1 / referencePoint;
                 arrowController.MakeArrowsBigger(touchMoveDelta);
-                Debug.Log("************ARROW DISTANCE: " + distanceFromPlayer1);
-                Debug.Log("************ARROW DISTANCE DELTA: " + distanceFromPlayer1 / referencePoint);
+                //Debug.Log("************ARROW DISTANCE: " + distanceFromPlayer1);
+                //Debug.Log("************ARROW DISTANCE DELTA: " + distanceFromPlayer1 / referencePoint);
 
 
                 float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
@@ -124,11 +124,11 @@ public class JumpController : MonoBehaviour
         //float distanceFromPlayer2 = Vector2.Distance(resultVector2.normalized, playerPos.normalized);
 
 
-        Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
-        Debug.Log("Touch Distance: " + distanceFromPlayer1);
+      //  Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
+      //  Debug.Log("Touch Distance: " + distanceFromPlayer1);
 
 
-        Debug.Log("Player X: " + playerPos.x + "Player y: " + playerPos.y);
+      //  Debug.Log("Player X: " + playerPos.x + "Player y: " + playerPos.y);
 
 
         //playerBody.velocity = new Vector2(resultVector2.x * distanceFromPlayer2 * jumpForce, resultVector2.y * distanceFromPlayer2 * jumpForce);

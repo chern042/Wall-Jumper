@@ -124,7 +124,7 @@ public class JumpController : MonoBehaviour
         //float distanceFromPlayer2 = Vector2.Distance(resultVector2.normalized, playerPos.normalized);
 
 
-      //  Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
+        Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
       //  Debug.Log("Touch Distance: " + distanceFromPlayer1);
 
 

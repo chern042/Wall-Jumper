@@ -9,122 +9,69 @@ public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField]public GameObject[] obstaclePrefabs;
     [SerializeField]public Tilemap[] walls;
-    [SerializeField]public Transform spawnPoint;
     [SerializeField]private LayerMask wall;
-    [SerializeField]public float minSpawnDelay = 1.0f;
-    [SerializeField]public float maxSpawnDelay = 3.0f;
     [SerializeField] private int obstacleCount = 10;
+    [SerializeField] private int moduloSpawn = 15;
 
 
-    private int[] yCoordsSpawned;
-    private bool foundYPos;
-    private float nextSpawnTime;
     private int lastY;
+    private int lastObs;
 
     private void Start()
     {
         // Initialize the next spawn time
-        nextSpawnTime = Time.time + Random.Range(minSpawnDelay, maxSpawnDelay);
-        yCoordsSpawned = new int[1];
-        foundYPos = false;
+        lastObs = -1;
         lastY = 0;
     }
 
     private void Update()
     {
 
+        // Get the top Y position of the camera's current world coordinates
+        int yPoint = (int)Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y;
+
         // Check if it's time to spawn an obstacle
-        Debug.Log(GameObject.FindGameObjectsWithTag("Obstacle").Length);
-        if (GameObject.FindGameObjectsWithTag("Obstacle").Length <=obstacleCount)
+        if(yPoint%moduloSpawn == 0 && lastY != yPoint)
         {
             // Randomly select an obstacle prefab
-            GameObject randomObstacle = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+            int randomObstacleIndex = Random.Range(0, obstaclePrefabs.Length);
 
-            int yPoint = (int)Random.Range((spawnPoint.position.y*1.5f)+lastY, spawnPoint.position.y * 4);
-            if (yCoordsSpawned.Length == 1)
+            while (lastObs == randomObstacleIndex)
             {
-                yCoordsSpawned[0] = yPoint;
-                // Calculate a random spawn position within the boundaries
-                Vector3 randomSpawnPosition = new Vector3(-2f,yPoint,0);
-
-                PlaceObstacles(randomObstacle, randomSpawnPosition, yPoint);
-
+                randomObstacleIndex = Random.Range(0, obstaclePrefabs.Length);
             }
-            else
+
+            GameObject randomObstacle = obstaclePrefabs[randomObstacleIndex];
+
+
+
+            Vector3 spawnPosition = new Vector3( -4f,yPoint,0);
+
+            if (Random.Range(0, 2) == 0)
             {
-                foreach (int point in yCoordsSpawned)
+                // Instantiate the obstacle at the random position
+                GameObject obstacle = Instantiate(randomObstacle, spawnPosition, Quaternion.identity, GameObject.FindGameObjectWithTag("Obstacles").transform);
+
+                Rigidbody2D obBody = obstacle.GetComponent<Rigidbody2D>();
+                PolygonCollider2D obCollider = obstacle.GetComponent<PolygonCollider2D>();
+                float obstacleWidth = obCollider.bounds.size.x;
+
+                float newXPos = Random.Range(-10.5f + ((float)Math.Round((decimal)obstacleWidth, 2) / 2), 2.5f - ((float)Math.Round((decimal)obstacleWidth, 2) / 2));
+
+
+                if (Random.Range(0, 2) == 0)
                 {
-                    if (yPoint == point || yPoint == point - 1 || yPoint == point + 1 || yPoint == point - 2 || yPoint == point + 2)
-                    {
-                        foundYPos = true;
-                    }
+                    obBody.bodyType = RigidbodyType2D.Static;
                 }
-
-                if (!foundYPos)
-                {
-                    //Debug.Log(yCoordsSpawned.Length);
-                    yCoordsSpawned[yCoordsSpawned.Length-1] = yPoint;
-
-                    // Calculate a random spawn position within the boundaries
-                    Vector3 randomSpawnPosition = new Vector3( -2f,yPoint,0);
-
-                    PlaceObstacles(randomObstacle, randomSpawnPosition, yPoint);
-
-
-                }
-            }
-            foundYPos = false;
-            if (yCoordsSpawned.Length >= 50)
-            {
-                Array.Resize(ref yCoordsSpawned, 1);
+                obBody.transform.position = new Vector3(newXPos, obBody.transform.position.y, obBody.transform.position.z);
 
             }
-
-
+            lastY = yPoint;
 
 
         }
     }
 
-    private void PlaceObstacles(GameObject randomObstacle, Vector3 randomSpawnPosition, int yPoint)
-    {
-        // Instantiate the obstacle at the random position
-        GameObject obstacle = Instantiate(randomObstacle, randomSpawnPosition, Quaternion.identity, GameObject.FindGameObjectWithTag("Obstacles").transform);
-        Rigidbody2D obBody = obstacle.GetComponent<Rigidbody2D>();
-        PolygonCollider2D obCollider = obstacle.GetComponent<PolygonCollider2D>();
-
-        if (Random.Range(0, 2) == 0)
-        {
-            obBody.bodyType = RigidbodyType2D.Static;
-        }
-
-        if (IsTouchingLeftRight(true, obCollider))
-        {
-            obBody.transform.position = new Vector3(obBody.transform.position.x - 2, obBody.transform.position.y, obBody.transform.position.z);
-        }else if (IsTouchingLeftRight(false, obCollider))
-        {
-
-            obBody.transform.position = new Vector3(obBody.transform.position.x + 2, obBody.transform.position.y, obBody.transform.position.z);
-
-        }
-
-        // Update the next spawn time
-        nextSpawnTime = Time.time + Random.Range(minSpawnDelay, maxSpawnDelay);
-        lastY = yPoint;
-        Array.Resize(ref yCoordsSpawned, yCoordsSpawned.Length + 1);
-    }
 
 
-    private bool IsTouchingLeftRight(bool leftRight, PolygonCollider2D collider)
-    {
-        if (leftRight)
-        {
-            return Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0f, Vector2.left, .2f, wall);
-        }
-        else
-        {
-            return Physics2D.BoxCast(collider.bounds.center, collider.bounds.size, 0f, Vector2.right, .2f, wall);
-        }
-
-    }
 }

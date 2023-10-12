@@ -19,9 +19,12 @@ public class MoveObstacle : MonoBehaviour
     {
 
 
-        if (collision.gameObject.CompareTag("Wall")|| collision.gameObject.CompareTag("Obstacle")){
+        if ((collision.gameObject.CompareTag("Wall")|| collision.gameObject.CompareTag("Obstacle"))&& obstacle.bodyType == RigidbodyType2D.Dynamic){
             speed = -speed;
             obstacle.velocity = new Vector2(speed, 0f);
+        }else if(obstacle.bodyType == RigidbodyType2D.Static)
+        {
+            //obstacle.position.x;
         }
 
     }

@@ -7,6 +7,7 @@ public class MoveObstacle : MonoBehaviour
     private Rigidbody2D obstacle;
 
     [SerializeField] private float speed = 2f;
+    [SerializeField] private GameObject objectSelfReference;
 
     // Start is called before the first frame update
     void Start()
@@ -15,18 +16,15 @@ public class MoveObstacle : MonoBehaviour
         obstacle.velocity = new Vector2(speed, 0f);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void Update()
     {
-
-
-        if ((collision.gameObject.CompareTag("Wall")|| collision.gameObject.CompareTag("Obstacle"))&& obstacle.bodyType == RigidbodyType2D.Dynamic){
-            speed = -speed;
-            obstacle.velocity = new Vector2(speed, 0f);
-        }else if(obstacle.bodyType == RigidbodyType2D.Static)
+        if (Camera.main.transform.position.y/2 > transform.position.y)
         {
-            //obstacle.position.x;
+            Destroy(objectSelfReference);
         }
-
     }
+
+
 
 }

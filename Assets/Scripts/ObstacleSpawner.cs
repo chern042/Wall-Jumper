@@ -56,7 +56,7 @@ public class ObstacleSpawner : MonoBehaviour
                 PolygonCollider2D obCollider = obstacle.GetComponent<PolygonCollider2D>();
                 float obstacleWidth = obCollider.bounds.size.x;
 
-                float newXPos = Random.Range(-10.5f + ((float)Math.Round((decimal)obstacleWidth, 2) / 2), 2.5f - ((float)Math.Round((decimal)obstacleWidth, 2) / 2));
+                float newXPos = Random.Range(-10f + ((float)Math.Round((decimal)obstacleWidth, 2) / 2), 2f - ((float)Math.Round((decimal)obstacleWidth, 2) / 2));
 
 
                 if (Random.Range(0, 2) == 0)

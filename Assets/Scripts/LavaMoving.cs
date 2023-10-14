@@ -7,7 +7,6 @@ public class LavaMoving : MonoBehaviour
 {
     private float moveSpeed = 2f;
     private Rigidbody2D rb;
-    [SerializeField] private LayerMask wallLayer;
 
 
     private void Start()
@@ -37,20 +36,5 @@ public class LavaMoving : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(2f, 0f);
-            StartCoroutine(DestroyGameObject(collision.gameObject));
-        }
-    }
 
-
-    IEnumerator DestroyGameObject(GameObject obstacle)
-    {        
-        yield return new WaitForSeconds(1);
-        Destroy(obstacle);
-
-    }
 }

@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField]public GameObject[] obstaclePrefabs;
-    [SerializeField]public Tilemap[] walls;
-    [SerializeField]private LayerMask wall;
     [SerializeField] private int obstacleCount = 10;
     [SerializeField] private int moduloSpawn = 15;
 

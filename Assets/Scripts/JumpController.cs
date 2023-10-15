@@ -179,7 +179,7 @@ public class JumpController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, jumpableGround))||(Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.up, .1f, jumpableGround));
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LavaMoving : MonoBehaviour
 {
-    private float moveSpeed = 2f;
+    private float moveSpeed = 2.5f;
     private Rigidbody2D rb;
 
 

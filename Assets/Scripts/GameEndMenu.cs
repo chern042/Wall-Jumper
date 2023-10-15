@@ -38,7 +38,12 @@ public class GameEndMenu : MonoBehaviour
 
     }
 
-    public void ResetLevel()
+    public void InvokeResetLevel()
+    {
+        Invoke("ResetLevel", 1f);
+    }
+
+    private void ResetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

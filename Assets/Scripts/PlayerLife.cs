@@ -10,7 +10,7 @@ public class PlayerLife : MonoBehaviour
     private BoxCollider2D playerCollider;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<BoxCollider2D>();
@@ -40,8 +40,10 @@ public class PlayerLife : MonoBehaviour
 
         playerBody.AddForce(new Vector2(-1f, 4f), ForceMode2D.Impulse);
         playerCollider.enabled = false;
+        JumpController.gameStart = false;
+        GameEndMenu.gameEnded = true;
 
-        Invoke("ResetLevel", 1f);
+        //Invoke("SetGameEnd", 1f);
         //playerAnim.SetTrigger("death");
 
     }
@@ -50,5 +52,7 @@ public class PlayerLife : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+
 
 }

@@ -13,14 +13,18 @@ public class JumpController : MonoBehaviour
     private float referencePoint;
     private float touchMoveDelta;
     private bool touchStart;
+    private Camera cam;
+
+
     public static bool gameStart;
 
 
     [SerializeField] private ArrowSizeController arrowController;
     [SerializeField] private float jumpForce = 1f;
     [SerializeField] private LayerMask jumpableGround;
-    [SerializeField] private Camera cam;
     [SerializeField] private Transform arrow;
+    [SerializeField] private TextMesh scoreTextMesh;
+
 
 
 
@@ -28,68 +32,74 @@ public class JumpController : MonoBehaviour
     void Start()
     {
 
-        Debug.Log("Cam: " + cam.transform.position.ToString());
         playerBody = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         playerCollider = GetComponent<BoxCollider2D>();
+
+        scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y / 2, scoreTextMesh.transform.position.z);
         cam = Camera.main;
         arrow.gameObject.SetActive(false);
         touchMoveDelta = 1;
         touchStart = false;
-        gameStart = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 playerPos;
-
-        if (IsTouchingLeftRight(true) || IsTouchingLeftRight(false) || IsGrounded())
+        if (!GameEndMenu.gameEnded)
         {
-            if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && !touchStart)
+
+
+            Vector2 playerPos;
+
+            if (IsTouchingLeftRight(true) || IsTouchingLeftRight(false) || IsGrounded())
             {
-                arrow.gameObject.SetActive(true);
-                touchStart = true;
+                if (((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && !touchStart)
+                {
+                    scoreTextMesh.gameObject.SetActive(false);
+                    arrow.gameObject.SetActive(true);
+                    touchStart = true;
+
+                    playerPos = playerBody.transform.position;
+                    referencePoint = Vector2.Distance(playerPos, GetTouchWorldPosition());
+                    // Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
+
+                    float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
+                    arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+                }
+                else if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved))
+                {
+                    arrow.gameObject.SetActive(true);
 
 
-                playerPos = playerBody.transform.position;
-                referencePoint = Vector2.Distance(playerPos, GetTouchWorldPosition());
-               // Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
-              
-                float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
-                arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+
+                    playerPos = playerBody.transform.position;
+                    float distanceFromPlayer1 = CalculateResultVector(playerPos, GetTouchWorldPosition()).magnitude;
+                    touchMoveDelta = distanceFromPlayer1 / referencePoint;
+                    arrowController.MakeArrowsBigger(touchMoveDelta);
+                    //Debug.Log("************ARROW DISTANCE: " + distanceFromPlayer1);
+                    //Debug.Log("************ARROW DISTANCE DELTA: " + distanceFromPlayer1 / referencePoint);
+
+
+                    float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
+                    arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+
+                }
+                if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
+                {
+                    gameStart = true;
+                    touchStart = false;
+                    arrow.gameObject.SetActive(false);
+                    JumpPlayerTowardsTouch();
+
+                }
+
+
             }
-             else if ((Input.GetAxisRaw("Mouse X") != 0 || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)) )
-            {
-                arrow.gameObject.SetActive(true);
-
-
-
-                playerPos = playerBody.transform.position;
-                float distanceFromPlayer1 = CalculateResultVector(playerPos, GetTouchWorldPosition()).magnitude;
-                touchMoveDelta = distanceFromPlayer1 / referencePoint;
-                arrowController.MakeArrowsBigger(touchMoveDelta);
-                //Debug.Log("************ARROW DISTANCE: " + distanceFromPlayer1);
-                //Debug.Log("************ARROW DISTANCE DELTA: " + distanceFromPlayer1 / referencePoint);
-
-
-                float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
-                arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
-
-            }
-            if ((Input.GetMouseButtonUp(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)) )
-            {
-                gameStart = true;
-                touchStart = false;
-                arrow.gameObject.SetActive(false);
-                JumpPlayerTowardsTouch();
-
-            }
-
-
         }
+        
 
 
     }
@@ -102,26 +112,16 @@ public class JumpController : MonoBehaviour
         return touchPosWorld;
     }
 
-    private Vector2 GetClickWorldPosition()
-    {
-        Vector2 mousePos = Input.mousePosition;
-        Vector2 mousePosWorld = ConvertScreenToWorldPoint(mousePos);
-        return mousePosWorld;
-    }
 
     private void JumpPlayerTowardsTouch()
     {
         playerBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-        //Vector2 mousePosWorld = GetClickWorldPosition();
         Vector2 touchPosWorld = GetTouchWorldPosition();
         Vector2 playerPos = transform.position;
 
         Vector2 resultVector1 = CalculateResultVector(playerPos, touchPosWorld);
-        //Vector2 resultVector2 = CalculateResultVector(playerPos, mousePosWorld);
 
-        //float distanceFromPlayer1 = Vector2.Distance(resultVector1.normalized, playerPos.normalized);
         float distanceFromPlayer1 = resultVector1.magnitude;
-        //float distanceFromPlayer2 = Vector2.Distance(resultVector2.normalized, playerPos.normalized);
 
 
         Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
@@ -131,7 +131,6 @@ public class JumpController : MonoBehaviour
       //  Debug.Log("Player X: " + playerPos.x + "Player y: " + playerPos.y);
 
 
-        //playerBody.velocity = new Vector2(resultVector2.x * distanceFromPlayer2 * jumpForce, resultVector2.y * distanceFromPlayer2 * jumpForce);
 
         if (touchMoveDelta >= 0.6f && touchMoveDelta <= 1.65f)
         {

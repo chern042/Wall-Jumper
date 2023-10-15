@@ -8,12 +8,13 @@ public class MoveObstacle : MonoBehaviour
     private Rigidbody2D obstacle;
 
     [SerializeField] private float speed = 2f;
-    [SerializeField] private GameObject objectSelfReference;
+    private GameObject objectSelfReference;
     private Camera cam;
     // Start is called before the first frame update
     void Start()
     {
         obstacle = GetComponent<Rigidbody2D>();
+        objectSelfReference = GetComponent<GameObject>();
         obstacle.velocity = new Vector2(speed, 0f);
         cam = Camera.main;
 
@@ -22,13 +23,18 @@ public class MoveObstacle : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("CAM Y: " + (cam.transform.position.y-cam.orthographicSize) + "      OBS " + objectSelfReference.name + " Y: " + transform.position.y);
+
         if ((cam.transform.position.y-cam.orthographicSize)-5 > transform.position.y)
         {
             Destroy(objectSelfReference);
             //StartCoroutine(DestroyGameObject(objectSelfReference));
 
         }
+        if(JumpController.gameStart == false)
+        {
+            obstacle.velocity = new Vector2(0, 0);
+        }
+
     }
 
     //IEnumerator DestroyGameObject(GameObject obstacle)

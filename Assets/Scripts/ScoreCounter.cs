@@ -8,31 +8,42 @@ public class ScoreCounter : MonoBehaviour
 {
 
     private int score = 0;
-    private int previousScore;
+    private int previousY;
     private int maxZeroes = 11;
     private string scoreString;
 
-    [SerializeField] private Text scoreText;
+    [SerializeField] private TextMesh scoreTextMesh;
+    [SerializeField] private int scoreModulo = 20;
 
     private void Start()
     {
         scoreString = "00000000000";
-        scoreText.transform.position = new Vector2(scoreText.transform.position.x, Screen.height * 0.9f);
-
-
+        //scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y *2, scoreTextMesh.transform.position.z);
+        scoreTextMesh.gameObject.SetActive(false);
+        previousY = (int)transform.position.y;
     }
 
     private void Update()
     {
-
-
-        score = (int)transform.position.y;
-        if (score > 0 && score > previousScore)
+        if(JumpController.gameStart == true)
         {
-            scoreText.text = scoreString.Substring(0, maxZeroes - score.ToString().Length) + score;
-            previousScore = score;
+            scoreTextMesh.gameObject.SetActive(true);
 
+            scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y - 1, scoreTextMesh.transform.position.z);
+
+            if (previousY != (int)transform.position.y && previousY < (int)transform.position.y)
+            {
+                if ((int)transform.position.y % scoreModulo == 0)
+                {
+                    score += 1;
+                }
+
+                scoreTextMesh.text = scoreString.Substring(0, maxZeroes - score.ToString().Length) + score;
+                previousY = (int)transform.position.y;
+            }
         }
+
+       
     }
 
 

@@ -17,6 +17,7 @@ public class ScoreCounter : MonoBehaviour
 
     private void Start()
     {
+        score = 0;
         scoreString = "00000000000";
         scoreTextMesh.gameObject.SetActive(false);
         previousY = (int)transform.position.y;
@@ -28,7 +29,7 @@ public class ScoreCounter : MonoBehaviour
         {
             scoreTextMesh.gameObject.SetActive(true);
 
-            scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y - 1, scoreTextMesh.transform.position.z);
+            scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y - 3, scoreTextMesh.transform.position.z);
 
             if (previousY != (int)transform.position.y && previousY < (int)transform.position.y)
             {
@@ -40,6 +41,10 @@ public class ScoreCounter : MonoBehaviour
                 scoreTextMesh.text = scoreString.Substring(0, maxZeroes - score.ToString().Length) + score;
                 previousY = (int)transform.position.y;
             }
+        }
+        else
+        {
+            scoreTextMesh.gameObject.SetActive(false);
         }
 
        

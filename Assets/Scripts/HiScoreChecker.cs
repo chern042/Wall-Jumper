@@ -10,7 +10,7 @@ public class HiScoreChecker : MonoBehaviour
     private int maxZeroes = 11;
     private string scoreString;
     private string hiScoreString;
-    private int hiScore = 0;
+    private int hiScore;
 
     [SerializeField] private Text scoreText;
     [SerializeField] private Text hiScoreText;
@@ -18,7 +18,7 @@ public class HiScoreChecker : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        hiScore = PlayerPrefs.GetInt("hiScore");
+        hiScore = PlayerPrefs.GetInt("hiScore",0);
 
     }
 
@@ -27,16 +27,16 @@ public class HiScoreChecker : MonoBehaviour
     {
         scoreString = "00000000000";
         hiScoreString = "HISCORE: 00000000000";
+        hiScore = PlayerPrefs.GetInt("hiScore");
         score = ScoreCounter.score;
         scoreText.text = scoreString.Substring(0, maxZeroes - score.ToString().Length) + score;
-        hiScoreText.text = "HISCORE: "+hiScoreString.Substring(9, maxZeroes - hiScore.ToString().Length) + hiScore;
         scoreText.transform.position = new Vector2(scoreText.transform.position.x, Screen.height * 0.9f);
-        hiScoreText.transform.position = new Vector2(hiScoreText.transform.position.x, Screen.height * 0.85f);
         if (score > hiScore)
         {
             PlayerPrefs.SetInt("hiScore", score);
             hiScore = score;
         }
+        hiScoreText.text = "HISCORE: " + hiScoreString.Substring(9, maxZeroes - hiScore.ToString().Length) + hiScore;
 
 
     }

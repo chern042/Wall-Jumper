@@ -32,7 +32,10 @@ public class MoveObstacle : MonoBehaviour
         }
         if(JumpController.gameStart == false)
         {
-            obstacle.velocity = new Vector2(0, 0);
+            if(obstacle.bodyType == RigidbodyType2D.Dynamic)
+            {
+                obstacle.velocity = new Vector2(0, 0);
+            }
         }
 
     }

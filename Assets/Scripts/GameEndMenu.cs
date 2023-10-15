@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 
 public class GameEndMenu : MonoBehaviour
@@ -29,8 +30,6 @@ public class GameEndMenu : MonoBehaviour
     }
 
 
-
-
     IEnumerator SetGameEndMenu(bool set)
     {
         yield return new WaitForSeconds(1);
@@ -38,4 +37,10 @@ public class GameEndMenu : MonoBehaviour
         menuOpen = true;
 
     }
+
+    public void ResetLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }

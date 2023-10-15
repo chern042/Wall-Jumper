@@ -43,15 +43,8 @@ public class PlayerLife : MonoBehaviour
         JumpController.gameStart = false;
         GameEndMenu.gameEnded = true;
 
-        //Invoke("SetGameEnd", 1f);
-        //playerAnim.SetTrigger("death");
-
     }
 
-    private void ResetLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
 
 

@@ -7,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 public class ScoreCounter : MonoBehaviour
 {
 
-    private int score = 0;
+    public static int score = 0;
     private int previousY;
     private int maxZeroes = 11;
     private string scoreString;
@@ -18,7 +18,6 @@ public class ScoreCounter : MonoBehaviour
     private void Start()
     {
         scoreString = "00000000000";
-        //scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y *2, scoreTextMesh.transform.position.z);
         scoreTextMesh.gameObject.SetActive(false);
         previousY = (int)transform.position.y;
     }

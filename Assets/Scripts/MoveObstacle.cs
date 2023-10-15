@@ -31,12 +31,12 @@ public class MoveObstacle : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyGameObject(GameObject obstacle)
-    {
-        yield return new WaitForSeconds(1);
-        Destroy(obstacle);
+    //IEnumerator DestroyGameObject(GameObject obstacle)
+    //{
+    //    yield return new WaitForSeconds(1);
+    //    Destroy(obstacle);
 
-    }
+    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

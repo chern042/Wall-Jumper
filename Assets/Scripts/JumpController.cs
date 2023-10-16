@@ -13,6 +13,7 @@ public class JumpController : MonoBehaviour
     private bool touchStart;
     private Camera cam;
     private Vector2 finalVector;
+    private bool offRange = false;
 
 
 
@@ -20,7 +21,7 @@ public class JumpController : MonoBehaviour
 
 
     [SerializeField] private ArrowSizeController arrowController;
-    [SerializeField] private float jumpForce = 1f;
+    [SerializeField] private float jumpForce = 15f;
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private Transform arrow;
     [SerializeField] private TextMesh scoreTextMesh;
@@ -58,25 +59,52 @@ public class JumpController : MonoBehaviour
                 {
                     finalVector = new Vector2(0, 0);
                     scoreTextMesh.gameObject.SetActive(false);
-                    arrow.gameObject.SetActive(true);
+                    //arrow.gameObject.SetActive(true);
                     touchStart = true;
 
                     playerPos = playerBody.transform.position;
                     referencePoint = Vector2.Distance(playerPos, GetTouchWorldPosition());
                     // Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
 
+
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
-                    if ( !( ( (angle >= 80f || angle <= -80f) && !IsGrounded() && IsTouchingLeftRight(true) )  ||
-                            ( ( ( angle <= 100f && angle >= 0) || (angle >= -80f && angle <= 0) ) && !IsGrounded() && IsTouchingLeftRight(false) ) ||
-                            ( (angle <= 10f  || angle >= 170f) && IsGrounded() ) ) )
+
+
+                    if (((angle >= 80f) || (angle <= -80f)) && (!IsGrounded()) && (IsTouchingLeftRight(true)))
                     {
+                        offRange = true;
+
+                    }
+                    else if (((angle <= 100f && angle >= 0) || (angle >= -80f && angle <= 0)) && (!IsGrounded()) && (IsTouchingLeftRight(false)))
+                    {
+                        offRange = true;
+                    }
+                    else if ((angle <= 10f || angle >= 170) && IsGrounded())
+                    {
+                        offRange = true;
+                    }
+                    else
+                    {
+                        offRange = false;
                         arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
                     }
-                   
+
+
+                    if (offRange)
+                    {
+                        arrow.gameObject.SetActive(false);
+                        touchStart = false;
+
+                    }
+                    else
+                    {
+                        arrow.gameObject.SetActive(true);
+                    }
+
                 }
-                else if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved))
+                else if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved) && !offRange )
                 {
-                    arrow.gameObject.SetActive(true);
+                    //arrow.gameObject.SetActive(true);
 
 
 
@@ -119,9 +147,7 @@ public class JumpController : MonoBehaviour
                     }
 
                 }
-
-
-                    if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended))
+                  if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) && arrow.gameObject.activeSelf)
                     {
 
                         gameStart = true;
@@ -156,7 +182,7 @@ public class JumpController : MonoBehaviour
         Vector2 touchPosWorld = GetTouchWorldPosition();
         Vector2 playerPos = transform.position;
 
-        Vector2 resultVector = CalculateResultVector(playerPos, touchPosWorld);
+        Vector2 resultVector = CalculateResultVector(playerPos, touchPosWorld).normalized;
 
         float angle = Mathf.Atan2(resultVector.y,resultVector.x) * Mathf.Rad2Deg;
 
@@ -194,7 +220,7 @@ public class JumpController : MonoBehaviour
         }
         else
         {
-            finalVector = finalVector * (resultVector / resultVector.normalized);
+          //  finalVector = finalVector * (resultVector / resultVector.normalized);
 
             if (touchMoveDelta >= 0.6f && touchMoveDelta <= 1.65f)
             {

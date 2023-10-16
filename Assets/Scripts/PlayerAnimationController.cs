@@ -10,8 +10,7 @@ public class PlayerAnimationController : MonoBehaviour
     private SpriteRenderer sprite;
     private BoxCollider2D playerCollider;
 
-    private float dirX = 0f;
-    private enum MovementState { idle, running, jumping, falling };
+    private enum MovementState { idle, grabbing, jumping, falling, hit };
 
     // Use this for initialization
     void Start()
@@ -27,7 +26,7 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        UpdateAnimationState();
     }
 
     private void UpdateAnimationState()
@@ -41,11 +40,23 @@ public class PlayerAnimationController : MonoBehaviour
         if (playerBody.velocity.y > 0.1f)
         {
             state = MovementState.jumping;
-
         }
         else if (playerBody.velocity.y < -0.2f)
         {
             state = MovementState.falling;
+        }
+        else if((IsTouchingLeftRight(true) || IsTouchingLeftRight(false)) && !IsGrounded() )
+        {
+            state = MovementState.grabbing;
+        }
+
+        if(playerBody.velocity.x > 0.1f)
+        {
+            sprite.flipX = false;
+        }
+        else if (playerBody.velocity.x < -0.2f)
+        {
+            sprite.flipX = true;
         }
 
 
@@ -59,7 +70,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, interactableLayer)) || (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.up, .1f, interactableLayer));
+        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, interactableLayer));
     }
 
     private bool IsTouchingLeftRight(bool leftRight)

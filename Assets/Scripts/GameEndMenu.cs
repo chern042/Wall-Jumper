@@ -40,7 +40,7 @@ public class GameEndMenu : MonoBehaviour
 
     public void InvokeResetLevel()
     {
-        Invoke("ResetLevel", 1f);
+        Invoke("ResetLevel", 0.5f);
     }
 
     private void ResetLevel()

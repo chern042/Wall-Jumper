@@ -12,7 +12,7 @@ public class ScoreCounter : MonoBehaviour
     private int maxZeroes = 11;
     private string scoreString;
 
-    [SerializeField] private TextMesh scoreTextMesh;
+    [SerializeField] private Text scoreTextMesh;
     [SerializeField] private int scoreModulo = 20;
 
     private void Start()
@@ -21,6 +21,8 @@ public class ScoreCounter : MonoBehaviour
         scoreString = "00000000000";
         scoreTextMesh.gameObject.SetActive(false);
         previousY = (int)transform.position.y;
+        scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Screen.height *0.9f, scoreTextMesh.transform.position.z);
+
     }
 
     private void Update()
@@ -29,7 +31,6 @@ public class ScoreCounter : MonoBehaviour
         {
             scoreTextMesh.gameObject.SetActive(true);
 
-            scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y - 3, scoreTextMesh.transform.position.z);
 
             if (previousY != (int)transform.position.y && previousY < (int)transform.position.y)
             {

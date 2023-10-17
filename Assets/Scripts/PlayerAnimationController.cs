@@ -45,12 +45,12 @@ public class PlayerAnimationController : MonoBehaviour
         {
             state = MovementState.falling;
         }
-        else if((IsTouchingLeftRight(true) || IsTouchingLeftRight(false)) && !IsGrounded() )
+        else if(( IsTouchingLeftRight(true) || IsTouchingLeftRight(false) ) && ( !IsGrounded() || (IsGrounded() && HeadCovered()) ) )
         {
             state = MovementState.grabbing;
         }
 
-        if(playerBody.velocity.x > 0.1f)
+        if(playerBody.velocity.x > 0.2f)
         {
             sprite.flipX = false;
         }
@@ -73,15 +73,20 @@ public class PlayerAnimationController : MonoBehaviour
         return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, interactableLayer));
     }
 
+    private bool HeadCovered()
+    {
+        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.up, .2f, interactableLayer));
+    }
+
     private bool IsTouchingLeftRight(bool leftRight)
     {
         if (leftRight)
         {
-            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.left, .1f, interactableLayer);
+            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.left, .2f, interactableLayer);
         }
         else
         {
-            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.right, .1f, interactableLayer);
+            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.right, .2f, interactableLayer);
         }
 
     }

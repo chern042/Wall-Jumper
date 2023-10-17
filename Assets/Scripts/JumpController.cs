@@ -53,7 +53,7 @@ public class JumpController : MonoBehaviour
 
             Vector2 playerPos;
 
-            if (IsTouchingLeftRight(true) || IsTouchingLeftRight(false) || IsGrounded())
+            if (IsTouchingLeftRight(true) || IsTouchingLeftRight(false) || IsGrounded() )
             {
                 if (((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && !touchStart)
                 {
@@ -68,7 +68,7 @@ public class JumpController : MonoBehaviour
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
 
 
-                    if ( !IsGrounded() && IsTouchingLeftRight(true))
+                    if ( IsTouchingLeftRight(true))
                     {
                         if (angle >= 80f)
                         {
@@ -89,7 +89,7 @@ public class JumpController : MonoBehaviour
                         }
 
                     }
-                    else if (!IsGrounded() && IsTouchingLeftRight(false))
+                    else if ( IsTouchingLeftRight(false) )
                     {
                         if (angle <= 100f && angle >= 0f)
                         {
@@ -109,7 +109,7 @@ public class JumpController : MonoBehaviour
                             offRange = false;
                         }
                     }
-                    else if (IsGrounded())
+                    else if (IsGrounded() && !IsTouchingLeftRight(true) && !IsTouchingLeftRight(false) )
                     {
                         if (angle <= 10f && angle >= -90f)
                         {
@@ -152,19 +152,19 @@ public class JumpController : MonoBehaviour
 
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
 
-                    if(!IsGrounded() && IsTouchingLeftRight(true))
+                    if( IsTouchingLeftRight(true)  )
                     {
                         if (angle >= 80f) {finalVector = DegreeToVectorAngle(80f-90f);}
                         else if (angle <= -80f) {finalVector = DegreeToVectorAngle(-80f-90f);}
                         else {arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);finalVector = new Vector2(0, 0);}
                     }
-                    else if (!IsGrounded() && IsTouchingLeftRight(false))
+                    else if ( IsTouchingLeftRight(false) )
                     {
                         if (angle <= 100f && angle >= 0f) {finalVector = DegreeToVectorAngle(100f-90f);}
                         else if (angle >= -100f && angle <= 0f) {finalVector = DegreeToVectorAngle(-100f-90f);}
                         else {arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);finalVector = new Vector2(0, 0);}
                     }
-                    else if (IsGrounded())
+                    else if (IsGrounded() && !IsTouchingLeftRight(true) && !IsTouchingLeftRight(false))
                     {
                         if (angle <= 10f && angle >= -90f){finalVector = DegreeToVectorAngle(10f-90f);}
                         else if(angle >= 170f || (angle >= -180f && angle <= -90f)){finalVector = DegreeToVectorAngle(170f-90f);}
@@ -298,19 +298,23 @@ public class JumpController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, jumpableGround))||(Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.up, .1f, jumpableGround));
+        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.down, .1f, jumpableGround));
     }
 
+    private bool HeadCovered()
+    {
+        return (Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.up, .2f, jumpableGround));
+    }
 
     private bool IsTouchingLeftRight(bool leftRight)
     {
         if (leftRight)
         {
-            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.left, .1f, jumpableGround);
+            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.left, .2f, jumpableGround);
         }
         else
         {
-            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.right, .1f, jumpableGround);
+            return Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, Vector2.right, .2f, jumpableGround);
         }
 
     }

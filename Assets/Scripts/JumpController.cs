@@ -63,82 +63,112 @@ public class JumpController : MonoBehaviour
 
                     playerPos = playerBody.transform.position;
                     referencePoint = Vector2.Distance(playerPos, GetTouchWorldPosition());
-                    // Debug.Log("************ARROW REFERENCE DISTANCE MADE: " + referencePoint);
 
 
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
 
 
-                    if (((angle >= 80f) || (angle <= -80f)) && (!IsGrounded()) && (IsTouchingLeftRight(true)))
+                    if ( !IsGrounded() && IsTouchingLeftRight(true))
                     {
-                        offRange = true;
+                        if (angle >= 80f)
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, 80f - 90f);
+                            finalVector = DegreeToVectorAngle(80f - 90f);
+                            offRange = true;
+                        }
+                        else if (angle <= -80f)
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, -80f - 90f);
+                            finalVector = DegreeToVectorAngle(-80f - 90f);
+                            offRange = true;
+                        }
+                        else
+                        {
+                            offRange = false;
+                            arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+                        }
 
                     }
-                    else if (((angle <= 100f && angle >= 0) || (angle >= -80f && angle <= 0)) && (!IsGrounded()) && (IsTouchingLeftRight(false)))
+                    else if (!IsGrounded() && IsTouchingLeftRight(false))
                     {
-                        offRange = true;
+                        if (angle <= 100f && angle >= 0f)
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, 100f - 90f);
+                            finalVector = DegreeToVectorAngle(100f - 90f);
+                            offRange = true;
+                        }
+                        else if (angle >= -100f && angle <= 0f)
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, -100f - 90f);
+                            finalVector = DegreeToVectorAngle(-100f - 90f);
+                            offRange = true;
+                        }
+                        else
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+                            offRange = false;
+                        }
                     }
-                    else if ((angle <= 10f || angle >= 170) && IsGrounded())
+                    else if (IsGrounded())
                     {
-                        offRange = true;
+                        if (angle <= 10f && angle >= -90f)
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, 10f - 90f);
+                            finalVector = DegreeToVectorAngle(10f - 90f);
+                            offRange = true;
+                        }
+                        else if (angle >= 170f || (angle >= -180f && angle <= -90f))
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, 170f - 90f);
+                            finalVector = DegreeToVectorAngle(170f - 90f);
+                            offRange = true;
+                        }
+                        else
+                        {
+                            arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+                            offRange = false;
+                        }
                     }
-                    else
-                    {
-                        offRange = false;
-                        arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
-                    }
-
 
                     if (offRange)
                     {
-                        arrow.gameObject.SetActive(false);
                         touchStart = false;
+                    }
 
-                    }
-                    else
-                    {
-                        arrow.gameObject.SetActive(true);
-                    }
+                    arrow.gameObject.SetActive(true);
+                    arrowController.MakeArrowsBigger(1);
+
 
                 }
-                else if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved) && !offRange )
+                else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)  
                 {
-
-
                     playerPos = playerBody.transform.position;
 
                     float distanceFromPlayer = CalculateResultVector(playerPos, GetTouchWorldPosition()).magnitude;
                     touchMoveDelta = distanceFromPlayer / referencePoint;
                     arrowController.MakeArrowsBigger(touchMoveDelta);
-                    //Debug.Log("************ARROW DISTANCE: " + distanceFromPlayer1);
-                    //Debug.Log("************ARROW DISTANCE DELTA: " + distanceFromPlayer1 / referencePoint);
+
 
 
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
 
-                    if (( (angle >= 80f) || (angle <= -80f) )&&(!IsGrounded())&&(IsTouchingLeftRight(true)))
+                    if(!IsGrounded() && IsTouchingLeftRight(true))
                     {
-                        arrow.transform.eulerAngles = new Vector3(0, 0, arrow.transform.eulerAngles.z);
-                        float radians = (arrow.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad;
-                        finalVector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
-
-
+                        if (angle >= 80f) {finalVector = DegreeToVectorAngle(80f-90f);}
+                        else if (angle <= -80f) {finalVector = DegreeToVectorAngle(-80f-90f);}
+                        else {arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);finalVector = new Vector2(0, 0);}
                     }
-                    else if (( (angle <= 100f && angle >=0) || (angle >= -80f && angle <= 0) ) && (!IsGrounded()) && (IsTouchingLeftRight(false)))
+                    else if (!IsGrounded() && IsTouchingLeftRight(false))
                     {
-                        arrow.transform.eulerAngles = new Vector3(0, 0, arrow.transform.eulerAngles.z);
-                        float radians = (arrow.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad;
-                        finalVector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+                        if (angle <= 100f && angle >= 0f) {finalVector = DegreeToVectorAngle(100f-90f);}
+                        else if (angle >= -100f && angle <= 0f) {finalVector = DegreeToVectorAngle(-100f-90f);}
+                        else {arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);finalVector = new Vector2(0, 0);}
                     }
-                    else if ((angle <= 10f || angle >= 170) && IsGrounded() )
+                    else if (IsGrounded())
                     {
-                        arrow.transform.eulerAngles = new Vector3(0, 0, arrow.transform.eulerAngles.z);
-                        float radians = (arrow.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad;
-                        finalVector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
-                    }
-                    else
-                    {
-                        arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);
+                        if (angle <= 10f && angle >= -90f){finalVector = DegreeToVectorAngle(10f-90f);}
+                        else if(angle >= 170f || (angle >= -180f && angle <= -90f)){finalVector = DegreeToVectorAngle(170f-90f);}
+                        else{arrow.transform.eulerAngles = new Vector3(0, 0, angle - 90f);finalVector = new Vector2(0, 0);}
                     }
 
                 }
@@ -159,7 +189,11 @@ public class JumpController : MonoBehaviour
 
 
     }
-
+    private Vector2 DegreeToVectorAngle(float angle)
+    {
+        float radians = (angle + 90f) * Mathf.Deg2Rad;
+        return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+    }
 
     private Vector2 GetTouchWorldPosition()
     {

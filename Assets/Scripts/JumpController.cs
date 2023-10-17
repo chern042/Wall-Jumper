@@ -59,7 +59,6 @@ public class JumpController : MonoBehaviour
                 {
                     finalVector = new Vector2(0, 0);
                     scoreTextMesh.gameObject.SetActive(false);
-                    //arrow.gameObject.SetActive(true);
                     touchStart = true;
 
                     playerPos = playerBody.transform.position;
@@ -104,8 +103,6 @@ public class JumpController : MonoBehaviour
                 }
                 else if ((Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved) && !offRange )
                 {
-                    //arrow.gameObject.SetActive(true);
-
 
 
                     playerPos = playerBody.transform.position;
@@ -118,7 +115,6 @@ public class JumpController : MonoBehaviour
 
 
                     float angle = Mathf.Atan2(GetTouchWorldPosition().y - playerPos.y, GetTouchWorldPosition().x - playerPos.x) * Mathf.Rad2Deg;
-                    Debug.Log(angle);
 
                     if (( (angle >= 80f) || (angle <= -80f) )&&(!IsGrounded())&&(IsTouchingLeftRight(true)))
                     {
@@ -132,7 +128,6 @@ public class JumpController : MonoBehaviour
                     {
                         arrow.transform.eulerAngles = new Vector3(0, 0, arrow.transform.eulerAngles.z);
                         float radians = (arrow.transform.eulerAngles.z + 90f) * Mathf.Deg2Rad;
-
                         finalVector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
                     }
                     else if ((angle <= 10f || angle >= 170) && IsGrounded() )
@@ -154,8 +149,6 @@ public class JumpController : MonoBehaviour
                         touchStart = false;
                         arrow.gameObject.SetActive(false);
                         JumpPlayerTowardsTouch();
-
-                   
                 }
 
 

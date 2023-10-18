@@ -9,8 +9,8 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D playerBody;
     private BoxCollider2D playerCollider;
     [SerializeField] private AudioSource hitSound;
+    [SerializeField] private AudioSource lavaHitSound;
 
-    // Start is called before the first frame update
     private void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
@@ -23,12 +23,17 @@ public class PlayerLife : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Obstacle"))
+        if ( collision.gameObject.CompareTag("Obstacle"))
         {
 
             hitSound.Play();
             Die();
  
+        }else if (collision.gameObject.CompareTag("Lava"))
+        {
+            lavaHitSound.Play();
+            Die();
+
         }
 
     }
@@ -36,9 +41,7 @@ public class PlayerLife : MonoBehaviour
 
     private void Die()
     {
-        //deathSound.Play();
         playerBody.constraints = RigidbodyConstraints2D.None;
-
         playerBody.AddForce(new Vector2(-1f, 4f), ForceMode2D.Impulse);
         playerCollider.enabled = false;
         JumpController.gameStart = false;

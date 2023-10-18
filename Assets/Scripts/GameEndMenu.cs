@@ -12,7 +12,7 @@ public class GameEndMenu : MonoBehaviour
     [SerializeField]private Canvas endGameMenu;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         gameEnded = false;
         menuOpen = false;
@@ -20,7 +20,7 @@ public class GameEndMenu : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (gameEnded && !menuOpen)
         {

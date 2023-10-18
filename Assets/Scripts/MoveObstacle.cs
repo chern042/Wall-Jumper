@@ -8,15 +8,14 @@ public class MoveObstacle : MonoBehaviour
     private Rigidbody2D obstacle;
 
     [SerializeField] private float speed = 2f;
-    private GameObject objectSelfReference;
-    private Camera cam;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         obstacle = GetComponent<Rigidbody2D>();
-        objectSelfReference = GetComponent<GameObject>();
-        obstacle.velocity = new Vector2(speed, 0f);
-        cam = Camera.main;
+        if(obstacle.bodyType == RigidbodyType2D.Dynamic)
+        {
+            obstacle.velocity = new Vector2(speed, 0f);
+        }
 
     }
 
@@ -24,12 +23,6 @@ public class MoveObstacle : MonoBehaviour
     private void Update()
     {
 
-        if ((cam.transform.position.y-cam.orthographicSize)-5 > transform.position.y)
-        {
-            Destroy(objectSelfReference);
-            //StartCoroutine(DestroyGameObject(objectSelfReference));
-
-        }
         if(JumpController.gameStart == false)
         {
             if(obstacle.bodyType == RigidbodyType2D.Dynamic)
@@ -39,13 +32,6 @@ public class MoveObstacle : MonoBehaviour
         }
 
     }
-
-    //IEnumerator DestroyGameObject(GameObject obstacle)
-    //{
-    //    yield return new WaitForSeconds(1);
-    //    Destroy(obstacle);
-
-    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

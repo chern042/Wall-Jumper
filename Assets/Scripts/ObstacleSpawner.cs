@@ -8,15 +8,18 @@ using Random = UnityEngine.Random;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField]public GameObject[] obstaclePrefabs;
-    [SerializeField] private int moduloSpawn = 15;
+    [SerializeField] private int moduloSpawn = 10;
+    private List<GameObject> obstaclesSpawned;
+    private List<GameObject> obstaclesToDestroy;
 
 
     private int lastY;
     private int lastObs;
-
+    private int check = 0;
     private void Start()
     {
-        // Initialize the next spawn time
+        obstaclesSpawned = new List<GameObject>();
+        obstaclesToDestroy = new List<GameObject>();
         lastObs = -1;
         lastY = 0;
     }
@@ -48,7 +51,7 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 // Instantiate the obstacle at the random position
                 GameObject obstacle = Instantiate(randomObstacle, spawnPosition, Quaternion.identity, GameObject.FindGameObjectWithTag("Obstacles").transform);
-
+                obstaclesSpawned.Add(obstacle);
                 Rigidbody2D obBody = obstacle.GetComponent<Rigidbody2D>();
                 PolygonCollider2D obCollider = obstacle.GetComponent<PolygonCollider2D>();
                 float obstacleWidth = obCollider.bounds.size.x;
@@ -63,8 +66,33 @@ public class ObstacleSpawner : MonoBehaviour
                 obBody.transform.position = new Vector3(newXPos, obBody.transform.position.y, obBody.transform.position.z);
 
             }
-            lastY = yPoint;
 
+            lastY = yPoint;
+        }
+        check++;
+
+        if (check == 1000)
+        {
+            check = 0;
+
+            foreach (GameObject i in obstaclesSpawned)
+            {
+                float obstacleHeight = i.GetComponent<Rigidbody2D>().transform.position.y+3;
+                float cameraHeight = Camera.main.transform.position.y - Camera.main.orthographicSize;
+                if (obstacleHeight < cameraHeight)
+                {
+                    obstaclesToDestroy.Add(i);
+                }
+            }
+            if (obstaclesToDestroy.Count != 0)
+            {
+                foreach (GameObject i in obstaclesToDestroy)
+                {
+                    obstaclesSpawned.Remove(i);
+                    Destroy(i);
+                }
+                obstaclesToDestroy.Clear();
+            }
 
         }
     }

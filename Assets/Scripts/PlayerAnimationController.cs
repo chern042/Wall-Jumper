@@ -9,6 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
     private Animator playerAnim;
     private SpriteRenderer sprite;
     private BoxCollider2D playerCollider;
+    private MovementState state;
 
     private enum MovementState { idle, grabbing, jumping, falling, hit };
 
@@ -31,10 +32,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void UpdateAnimationState()
     {
-        MovementState state;
 
-       state = MovementState.idle;
-       //playerAnim.SetBool("running", false);
+       if(state != MovementState.hit)
+        {
+            state = MovementState.idle;
+        }
 
 
         if (playerBody.velocity.y > 0.1f)
@@ -63,6 +65,14 @@ public class PlayerAnimationController : MonoBehaviour
 
         playerAnim.SetInteger("state", (int)state);
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if ((collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Obstacle")) )
+        {
+            state = MovementState.hit;
+        }
     }
 
 

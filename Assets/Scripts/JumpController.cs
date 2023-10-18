@@ -34,7 +34,7 @@ public class JumpController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 
         playerBody = GetComponent<Rigidbody2D>();
@@ -49,7 +49,7 @@ public class JumpController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!GameEndMenu.gameEnded)
         {
@@ -224,7 +224,7 @@ public class JumpController : MonoBehaviour
         float distanceFromPlayer = resultVector.magnitude;
 
 
-        Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
+        //Debug.Log("Touch World X: " + touchPosWorld.x + " Touch World y: " + touchPosWorld.y);
       //  Debug.Log("Touch Distance: " + distanceFromPlayer1);
 
 

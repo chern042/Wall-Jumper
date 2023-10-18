@@ -14,12 +14,12 @@ public class VerticalTilemapGenerator : MonoBehaviour
 
     private Camera mainCamera;
 
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
 
         // Calculate the camera's position relative to the background Tilemaps
@@ -28,7 +28,7 @@ public class VerticalTilemapGenerator : MonoBehaviour
         // Check if the camera has moved enough to swap the Tilemaps
         if (cameraBottom >= (backgroundTilemapL1.transform.position.y + backgroundTilemapL1.size.y))
         {
-            Debug.Log("Camera Bottom: " + cameraBottom + " Bottom Tile top Y: " + backgroundTilemapL1.transform.position.y + backgroundTilemapL1.size.y);
+            //Debug.Log("Camera Bottom: " + cameraBottom + " Bottom Tile top Y: " + backgroundTilemapL1.transform.position.y + backgroundTilemapL1.size.y);
 
             // Move backgroundTilemapL1 on top of backgroundTilemapL2
             Vector3 newPosition1 = backgroundTilemapL2.transform.position + Vector3.up * backgroundTilemapL2.size.y;

@@ -8,7 +8,8 @@ using Random = UnityEngine.Random;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField]public GameObject[] obstaclePrefabs;
-    [SerializeField] private int moduloSpawn = 10;
+    [SerializeField]private int moduloSpawn = 7;
+
     private List<GameObject> obstaclesSpawned;
     private List<GameObject> obstaclesToDestroy;
 
@@ -22,6 +23,7 @@ public class ObstacleSpawner : MonoBehaviour
         obstaclesToDestroy = new List<GameObject>();
         lastObs = -1;
         lastY = 0;
+
     }
 
     private void Update()
@@ -58,12 +60,30 @@ public class ObstacleSpawner : MonoBehaviour
 
                 float newXPos = Random.Range(-10f + ((float)Math.Round((decimal)obstacleWidth, 2) / 2), 2f - ((float)Math.Round((decimal)obstacleWidth, 2) / 2));
 
-
-                if (Random.Range(0, 2) == 0)
+                bool isStatic = false;
+                if (Random.Range(0, 3)==0)
+                {
+                    isStatic = true;
+                }
+                if (isStatic)
                 {
                     obBody.bodyType = RigidbodyType2D.Static;
                 }
+
                 obBody.transform.position = new Vector3(newXPos, obBody.transform.position.y, obBody.transform.position.z);
+
+                if (Random.Range(0, 3) == 0 && !isStatic)
+                {
+                    if (obstacleWidth >= 7f)
+                    {
+                        obBody.transform.position = new Vector3(0, obBody.transform.position.y, obBody.transform.position.z);
+                        obstacle.GetComponent<IsRotated>().isRotated = true;
+                    }
+                    else
+                    {
+                        obstacle.GetComponent<IsRotated>().isRotated = true;
+                    }
+                }
 
             }
 

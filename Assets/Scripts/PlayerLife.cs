@@ -8,6 +8,7 @@ public class PlayerLife : MonoBehaviour
 
     private Rigidbody2D playerBody;
     private BoxCollider2D playerCollider;
+    [SerializeField] private AudioSource hitSound;
 
     // Start is called before the first frame update
     private void Start()
@@ -25,7 +26,7 @@ public class PlayerLife : MonoBehaviour
         if (collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Obstacle"))
         {
 
-            
+            hitSound.Play();
             Die();
  
         }

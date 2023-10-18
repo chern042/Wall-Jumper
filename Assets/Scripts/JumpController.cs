@@ -25,6 +25,10 @@ public class JumpController : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;
     [SerializeField] private Transform arrow;
     [SerializeField] private TextMesh scoreTextMesh;
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource landSound;
+
+
 
 
 
@@ -179,6 +183,7 @@ public class JumpController : MonoBehaviour
                         touchStart = false;
                         arrow.gameObject.SetActive(false);
                         JumpPlayerTowardsTouch();
+                    jumpSound.Play();
                 }
 
 
@@ -290,10 +295,13 @@ public class JumpController : MonoBehaviour
         {
             playerBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
-
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Ground"))
+        {
+            landSound.Play();
+        }
     }
- 
-    
+
+
 
 
     private bool IsGrounded()

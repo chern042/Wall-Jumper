@@ -14,6 +14,8 @@ public class ScoreCounter : MonoBehaviour
 
     [SerializeField] private Text scoreTextMesh;
     [SerializeField] private int scoreModulo = 20;
+    [SerializeField] private AudioSource scoreSound;
+
 
     private void Start()
     {
@@ -37,6 +39,7 @@ public class ScoreCounter : MonoBehaviour
                 if ((int)transform.position.y % scoreModulo == 0)
                 {
                     score += 1;
+                    scoreSound.Play();
                 }
 
                 scoreTextMesh.text = scoreString.Substring(0, maxZeroes - score.ToString().Length) + score;

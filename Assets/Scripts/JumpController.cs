@@ -45,7 +45,8 @@ public class JumpController : MonoBehaviour
         arrow.gameObject.SetActive(false);
         touchMoveDelta = 1;
         touchStart = false;
-        
+        jumpSound.volume = PlayerPrefs.GetFloat("Sound FX Slider", 1f);
+        landSound.volume = PlayerPrefs.GetFloat("Sound FX Slider", 1f);
     }
 
     // Update is called once per frame

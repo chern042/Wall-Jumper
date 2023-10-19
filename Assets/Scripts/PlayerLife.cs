@@ -15,6 +15,8 @@ public class PlayerLife : MonoBehaviour
     {
         playerBody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<BoxCollider2D>();
+        hitSound.volume = PlayerPrefs.GetFloat("Sound FX Slider", 1f);
+        lavaHitSound.volume = PlayerPrefs.GetFloat("Sound FX Slider", 1f);
     }
 
 

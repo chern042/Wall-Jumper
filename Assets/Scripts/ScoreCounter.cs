@@ -24,7 +24,7 @@ public class ScoreCounter : MonoBehaviour
         scoreTextMesh.gameObject.SetActive(false);
         previousY = (int)transform.position.y;
         scoreTextMesh.transform.position = new Vector3(scoreTextMesh.transform.position.x, Screen.height *0.9f, scoreTextMesh.transform.position.z);
-
+        scoreSound.volume = PlayerPrefs.GetFloat("Sound FX Slider", 1f);
     }
 
     private void Update()

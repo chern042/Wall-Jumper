@@ -11,6 +11,7 @@ public class BannerAd : MonoBehaviour
     [SerializeField] string _androidAdUnitId = "Banner_Android";
     [SerializeField] string _iOSAdUnitId = "Banner_iOS";
     string _adUnitId = null; // This will remain null for unsupported platforms.
+    bool loadBanner = false;
 
     void Start()
     {
@@ -27,9 +28,15 @@ public class BannerAd : MonoBehaviour
         Advertisement.Banner.SetPosition(_bannerPosition);
 
 
-        if(GameEndMenu.gameEnded == true)
+
+    }
+
+    private void Update()
+    {
+        if (GameEndMenu.gameEnded == true && loadBanner == false)
         {
             LoadBanner();
+            loadBanner = true;
 
         }
     }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Advertisements;
 
 public class PlayerLife : MonoBehaviour
 {
@@ -44,8 +43,6 @@ public class PlayerLife : MonoBehaviour
 
     private void Die()
     {
-
-         
         playerBody.constraints = RigidbodyConstraints2D.None;
         playerBody.AddForce(new Vector2(-1f, 4f), ForceMode2D.Impulse);
         playerCollider.enabled = false;

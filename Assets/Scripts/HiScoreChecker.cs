@@ -62,7 +62,7 @@ public class HiScoreChecker : MonoBehaviour
 
 
         }
-        Debug.Log("TEEEEEEEST: " + scoreTransform.transform.localScale.y * scoreTransform.rect.height + " or " + scoreTransform.rect.height + " at scale: " + scoreTransform.transform.localScale.y);
+        //Debug.Log("TEST: " + scoreTransform.transform.localScale.y * scoreTransform.rect.height + " or " + scoreTransform.rect.height + " at scale: " + scoreTransform.transform.localScale.y);
         if (score > hiScore)
         {
             PlayerPrefs.SetInt("hiScore", score);

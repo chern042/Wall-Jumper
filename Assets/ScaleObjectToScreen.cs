@@ -15,7 +15,16 @@ public class ad : MonoBehaviour
          {
             float sizeDelta = (Screen.width*0.666f) / objectToScale.rect.width;
             objectToScale.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-            objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 100f, objectToScale.transform.position.z);
+            if(Screen.height >= 1500)
+            {
+                objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 200f, objectToScale.transform.position.z);
+
+            }
+            else
+            {
+                objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 100f, objectToScale.transform.position.z);
+
+            }
             prevScreenSizeTest = Screen.width;
         }
         else
@@ -36,8 +45,8 @@ public class ad : MonoBehaviour
 
             float aspectRatio = ((float)Screen.height / (float)Screen.width);
 
-            Debug.Log("SCREEN RATIO (H/W): " + aspectRatio);
-            Debug.Log("CHANGED SCREEN WIDTH FROM " + prevScreenSizeTest + " TO " + Screen.width);
+            //Debug.Log("SCREEN RATIO (H/W): " + aspectRatio);
+            //Debug.Log("CHANGED SCREEN WIDTH FROM " + prevScreenSizeTest + " TO " + Screen.width);
 
 
 
@@ -46,17 +55,25 @@ public class ad : MonoBehaviour
             if (aspectRatio >= 1.6f)
             {
                 float sizeDelta = (Screen.width * 0.666f) / objectToScale.rect.width;
-                Debug.Log("CHANGED MENU SCALE FROM " + objectToScale.transform.localScale + " TO " + sizeDelta);
-                Debug.Log("CHANGED MENU WIDTH FROM " + objectToScale.rect.width * objectToScale.transform.localScale + " TO " + objectToScale.rect.width * sizeDelta);
+              //  Debug.Log("CHANGED MENU SCALE FROM " + objectToScale.transform.localScale + " TO " + sizeDelta);
+               // Debug.Log("CHANGED MENU WIDTH FROM " + objectToScale.rect.width * objectToScale.transform.localScale + " TO " + objectToScale.rect.width * sizeDelta);
                 objectToScale.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-                objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 100f, objectToScale.transform.position.z);
+                if (Screen.height >= 1500)
+                {
+                    objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 200f, objectToScale.transform.position.z);
 
+                }
+                else
+                {
+                    objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, ((objectToScale.rect.height * sizeDelta) / 2) + 100f, objectToScale.transform.position.z);
+
+                }
             }
             else
             {
                 float sizeDelta = (Screen.width * 0.5f) / objectToScale.rect.width;
-                Debug.Log("CHANGED MENU SCALE FROM " + objectToScale.transform.localScale + " TO " + sizeDelta);
-                Debug.Log("CHANGED MENU WIDTH FROM " + objectToScale.rect.width * objectToScale.transform.localScale + " TO " + objectToScale.rect.width * sizeDelta);
+                //Debug.Log("CHANGED MENU SCALE FROM " + objectToScale.transform.localScale + " TO " + sizeDelta);
+               // Debug.Log("CHANGED MENU WIDTH FROM " + objectToScale.rect.width * objectToScale.transform.localScale + " TO " + objectToScale.rect.width * sizeDelta);
                 objectToScale.transform.localScale = new Vector2(sizeDelta, sizeDelta);
                 objectToScale.transform.position = new Vector3(objectToScale.transform.position.x, (float)Screen.width/2f, objectToScale.transform.position.z);
             }

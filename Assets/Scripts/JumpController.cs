@@ -52,7 +52,7 @@ public class JumpController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (!GameEndMenu.gameEnded)
+        if (!GameEndMenu.gameEnded )
         {
 
 

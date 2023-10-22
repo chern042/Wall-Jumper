@@ -48,7 +48,7 @@ public class Ads : MonoBehaviour
 private void SdkInitializationCompletedEvent()
     {
         Debug.Log("TESSSST");
-    IronSource.Agent.launchTestSuite();
+    //IronSource.Agent.launchTestSuite();
     }
 
     // Update is called once per frame

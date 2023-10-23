@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Services.Mediation;
+
 public class Ads : MonoBehaviour
 {
 
@@ -26,7 +26,7 @@ public class Ads : MonoBehaviour
 
         Debug.Log("************TEST SUITE ENABLED");
 
-        IronSource.Agent.setMetaData("is_test_suite", "enable");
+        //IronSource.Agent.setMetaData("is_test_suite", "enable");
 
 
 
@@ -41,7 +41,7 @@ public class Ads : MonoBehaviour
 
 
         Debug.Log("************LOADING BANNER");
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+        //IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
 
         IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
         IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
@@ -62,6 +62,9 @@ public class Ads : MonoBehaviour
     private void BannerOnAdLoadedEvent(IronSourceAdInfo info)
     {
         Debug.Log("**********Banner Load Ad Succeeded: " + info.ToString());
+        IronSource.Agent.displayBanner();
+        loadBanner = true;
+
     }
 
     private void BannerOnAdLoadFailedEvent(IronSourceError error)
@@ -76,7 +79,6 @@ public class Ads : MonoBehaviour
         Debug.Log("************LOADING BANNER");
 
 
-        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
 
         //IronSource.Agent.launchTestSuite();
     }
@@ -94,11 +96,15 @@ public class Ads : MonoBehaviour
 
         if (GameEndMenu.gameEnded == true && loadBanner == false)
         {
-            IronSource.Agent.displayBanner();
+            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
 
 
-            loadBanner = true;
 
+
+        }else if(GameEndMenu.gameEnded == false && loadBanner == true)
+        {
+            IronSource.Agent.destroyBanner();
+            loadBanner = false;
         }
 
     }

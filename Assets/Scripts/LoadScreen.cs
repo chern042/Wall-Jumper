@@ -29,4 +29,5 @@ public class LoadScreen : MonoBehaviour
         
         gameLoaded = true;
     }
+
 }

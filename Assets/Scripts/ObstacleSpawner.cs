@@ -44,12 +44,13 @@ public class ObstacleSpawner : MonoBehaviour
             }
 
             GameObject randomObstacle = obstaclePrefabs[randomObstacleIndex];
+            lastObs = randomObstacleIndex;
 
 
 
             Vector3 spawnPosition = new Vector3( -4f,yPoint,0);
 
-            if (Random.Range(0, 2) == 0)
+            if (Random.Range(0, 100) < 90)
             {
                 // Instantiate the obstacle at the random position
                 GameObject obstacle = Instantiate(randomObstacle, spawnPosition, Quaternion.identity, GameObject.FindGameObjectWithTag("Obstacles").transform);

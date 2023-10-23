@@ -45,27 +45,24 @@ public class HiScoreChecker : MonoBehaviour
         {
             float sizeDelta = (Screen.width ) / scoreTransform.rect.width;
             scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-           // scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height + (transformHeight ), scoreTransform.transform.position.z);
-
+            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.85f, scoreTransform.transform.position.z);
         }
 
         else if (aspectRatio >= 1.5f)
         {
             float sizeDelta = (Screen.width * 0.8f) / scoreTransform.rect.width;
             scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-           // scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height + (transformHeight), scoreTransform.transform.position.z);
-
+            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.9f, scoreTransform.transform.position.z);
         }
         else
         {
             float sizeDelta = (Screen.width * 0.7f) / scoreTransform.rect.width;
             scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-
+            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.95f, scoreTransform.transform.position.z);
 
         }
 
 
-        scoreTransform.position = new Vector3(scoreTransform.transform.position.x, -(scoreTransform.rect.height/2)-50f, scoreTransform.transform.position.z);
 
         //Debug.Log("TEST: " + scoreTransform.transform.localScale.y * scoreTransform.rect.height + " or " + scoreTransform.rect.height + " at scale: " + scoreTransform.transform.localScale.y);
         if (score > hiScore)
@@ -79,51 +76,51 @@ public class HiScoreChecker : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        if(prevScreenSizeTest != Screen.width)
-        {
+    //private void Update()
+    //{
+    //    if(prevScreenSizeTest != Screen.width)
+    //    {
 
 
-            float aspectRatio = ((float)Screen.height / (float)Screen.width);
-
-
-
-            float transformHeight = -1f * (scoreTransform.transform.localScale.y * scoreTransform.rect.height);
-
-            if (aspectRatio >= 1.8f)
-            {
-                float sizeDelta = (Screen.width) / scoreTransform.rect.width;
-                scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-                scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.85f, scoreTransform.transform.position.z);
-
-
-            }
-
-            else if (aspectRatio >= 1.5f)
-            {
-                float sizeDelta = (Screen.width * 0.8f) / scoreTransform.rect.width;
-                scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-                scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.9f, scoreTransform.transform.position.z);
-
-
-            }
-            else
-            {
-                float sizeDelta = (Screen.width * 0.7f) / scoreTransform.rect.width;
-                scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
-                scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.95f, scoreTransform.transform.position.z);
-
-            }
+    //        float aspectRatio = ((float)Screen.height / (float)Screen.width);
 
 
 
+    //        float transformHeight = -1f * (scoreTransform.transform.localScale.y * scoreTransform.rect.height);
+
+    //        if (aspectRatio >= 1.8f)
+    //        {
+    //            float sizeDelta = (Screen.width) / scoreTransform.rect.width;
+    //            scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
+    //            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.85f, scoreTransform.transform.position.z);
+
+
+    //        }
+
+    //        else if (aspectRatio >= 1.5f)
+    //        {
+    //            float sizeDelta = (Screen.width * 0.8f) / scoreTransform.rect.width;
+    //            scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
+    //            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.9f, scoreTransform.transform.position.z);
+
+
+    //        }
+    //        else
+    //        {
+    //            float sizeDelta = (Screen.width * 0.7f) / scoreTransform.rect.width;
+    //            scoreTransform.transform.localScale = new Vector2(sizeDelta, sizeDelta);
+    //            scoreTransform.position = new Vector3(scoreTransform.transform.position.x, Screen.height * 0.95f, scoreTransform.transform.position.z);
+
+    //        }
 
 
 
-            prevScreenSizeTest = Screen.width;
-        }
-    }
+
+
+
+    //        prevScreenSizeTest = Screen.width;
+    //    }
+    //}
 
 
 }

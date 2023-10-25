@@ -7,6 +7,7 @@ public class Ads : MonoBehaviour
 {
 
     bool loadBanner = false;
+    bool initComplete = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,7 @@ public class Ads : MonoBehaviour
 #elif UNITY_IOS
         string appKey = "1c245b3d5";
 #elif UNITY_EDITOR
-        string appKey = "1c245b3d5";
+        string appKey = "1c2457a4d";
 #else
         string appKey = "unexpected_platform";
 #endif
@@ -26,7 +27,7 @@ public class Ads : MonoBehaviour
 
         Debug.Log("************TEST SUITE ENABLED");
 
-        //IronSource.Agent.setMetaData("is_test_suite", "enable");
+       //IronSource.Agent.setMetaData("is_test_suite", "enable");
 
 
 
@@ -34,9 +35,8 @@ public class Ads : MonoBehaviour
         IronSource.Agent.validateIntegration();
 
         Debug.Log("************UNITY VERSION: " + IronSource.unityVersion());
-
         // SDK init
-        Debug.Log("************INITIALIZING AD AGENT");
+        Debug.Log("************INITIALIZING AD AGENT "+appKey);
         IronSource.Agent.init(appKey);
 
 
@@ -47,7 +47,6 @@ public class Ads : MonoBehaviour
         IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
         IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
         IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
-
 
 
 
@@ -63,7 +62,6 @@ public class Ads : MonoBehaviour
     {
         Debug.Log("**********Banner Load Ad Succeeded: " + info.ToString());
         IronSource.Agent.displayBanner();
-        loadBanner = true;
 
     }
 
@@ -78,7 +76,7 @@ public class Ads : MonoBehaviour
 
         Debug.Log("************LOADING BANNER");
 
-
+        initComplete = true;
 
         //IronSource.Agent.launchTestSuite();
     }
@@ -94,14 +92,15 @@ public class Ads : MonoBehaviour
     void Update()
     {
 
-        if (GameEndMenu.gameEnded == true && loadBanner == false)
+        if (GameEndMenu.gameEnded == true && loadBanner == false && initComplete == true)
         {
+            IronSource.Agent.getPlacementInfo("Game_Over");
             IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+            loadBanner = true;
 
 
-
-
-        }else if(GameEndMenu.gameEnded == false && loadBanner == true)
+        }
+        if(GameEndMenu.gameEnded == false && loadBanner == true && initComplete == true)
         {
             IronSource.Agent.destroyBanner();
             loadBanner = false;

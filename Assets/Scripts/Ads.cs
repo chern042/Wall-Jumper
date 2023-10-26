@@ -30,7 +30,6 @@ public class Ads : MonoBehaviour
        //IronSource.Agent.setMetaData("is_test_suite", "enable");
 
 
-
         Debug.Log("************VALIDATING INTEGRATION");
         IronSource.Agent.validateIntegration();
 
@@ -100,7 +99,7 @@ public class Ads : MonoBehaviour
 
 
         }
-        if(GameEndMenu.gameEnded == false && loadBanner == true && initComplete == true)
+        else if(GameEndMenu.gameEnded == false && loadBanner == true && initComplete == true)
         {
             IronSource.Agent.destroyBanner();
             loadBanner = false;

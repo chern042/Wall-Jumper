@@ -12,10 +12,14 @@ public class Ads : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!initComplete)
+        {
+
+
 #if UNITY_ANDROID
         string appKey = "1c2457a4d";
 #elif UNITY_IPHONE
-        string appKey = "1c245b3d5";
+            string appKey = "1c245b3d5";
 #elif UNITY_IOS
         string appKey = "1c245b3d5";
 #elif UNITY_EDITOR
@@ -25,29 +29,28 @@ public class Ads : MonoBehaviour
 #endif
 
 
-        Debug.Log("************TEST SUITE ENABLED");
+            Debug.Log("************TEST SUITE ENABLED");
 
-       //IronSource.Agent.setMetaData("is_test_suite", "enable");
-
-
-        Debug.Log("************VALIDATING INTEGRATION");
-        IronSource.Agent.validateIntegration();
-
-        Debug.Log("************UNITY VERSION: " + IronSource.unityVersion());
-        // SDK init
-        Debug.Log("************INITIALIZING AD AGENT "+appKey);
-        IronSource.Agent.init(appKey);
+            //IronSource.Agent.setMetaData("is_test_suite", "enable");
 
 
-        Debug.Log("************LOADING BANNER");
-        //IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+            Debug.Log("************VALIDATING INTEGRATION");
+            IronSource.Agent.validateIntegration();
 
-        IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
-        IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
-        IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
-        IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
+            Debug.Log("************UNITY VERSION: " + IronSource.unityVersion());
+            // SDK init
+            Debug.Log("************INITIALIZING AD AGENT " + appKey);
+            IronSource.Agent.init(appKey);
 
 
+            Debug.Log("************LOADING BANNER");
+
+            IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
+            IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
+            IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
+            IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
+
+        }
 
 
     }
@@ -67,6 +70,9 @@ public class Ads : MonoBehaviour
     private void BannerOnAdLoadFailedEvent(IronSourceError error)
     {
         Debug.Log("**********Banner Load Ad Failed: " + error.ToString());
+
+        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+
     }
 
     private void SdkInitializationCompletedEvent()
@@ -97,9 +103,9 @@ public class Ads : MonoBehaviour
             IronSource.Agent.getPlacementInfo("Jump_Man_Android");
             IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_Android");
             loadBanner = true;
-#elif UNITY_IPHONE
+#elif UNITY_IOS
             IronSource.Agent.getPlacementInfo("Jump_Man_iOS");
-            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM,"Jump_Man_iOS");
+            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_iOS");
             loadBanner = true;
 #endif
 

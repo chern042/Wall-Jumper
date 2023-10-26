@@ -93,9 +93,15 @@ public class Ads : MonoBehaviour
 
         if (GameEndMenu.gameEnded == true && loadBanner == false && initComplete == true)
         {
-            IronSource.Agent.getPlacementInfo("Game_Over");
-            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
+#if UNITY_ANDROID
+            IronSource.Agent.getPlacementInfo("Jump_Man_Android");
+            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_Android");
             loadBanner = true;
+#elif UNITY_IPHONE
+            IronSource.Agent.getPlacementInfo("Jump_Man_iOS");
+            IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM,"Jump_Man_iOS");
+            loadBanner = true;
+#endif
 
 
         }

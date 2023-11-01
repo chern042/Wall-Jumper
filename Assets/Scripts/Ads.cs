@@ -8,44 +8,37 @@ public class Ads : MonoBehaviour
 #if UNITY_ANDROID
         string appKey = "1c2457a4d";
 #elif UNITY_IOS
-        string appKey = "1c245b3d5";
+    string appKey = "1c245b3d5";
 #elif UNITY_EDITOR
         string appKey = "1c2457a4d";
 #else
         string appKey = "unexpected_platform";
 #endif
-    bool bannerLoaded;
-    bool bannerLoading;
-    bool adsInitComplete;
-
-
-    void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+    static void OnBeforeSplashScreen()
     {
-        Debug.Log("**********************CALLING AWAKE()****************************");
-       // PlayerPrefs.SetString("adsInitialized", "false");
-        bannerLoaded = false;
-       // bannerLoading = false;
-       // IronSource.Agent.getAdvertiserId();
 
-
+        Debug.Log("**********************BEFORE SPLASH SCREEN/FIRST SCENE LOAD****************************");
+        PlayerPrefs.SetString("bannerHidden", "false");
+        PlayerPrefs.SetString("bannerLoaded", "false");
+        PlayerPrefs.SetString("sdkInitComplete", "false");
     }
+
+
+    //void Awake()
+    //{
+    //    Debug.Log("**********************CALLING AWAKE() AND INITIALIZING AD EVENTS****************************");
+    //    IronSource.Agent.getAdvertiserId();
+    //}
     void Start()
     {
-        Debug.Log("**********************CALLING START()****************************");
-        /*
-        if (PlayerPrefs.GetString("adsInitialized") == "true")
+
+        if (PlayerPrefs.GetString("sdkInitComplete") == "false")
         {
-            adsInitComplete = true;
-        }
-        else
-        {
-            adsInitComplete = false;
-        }
 
 
-        if (adsInitComplete == false)
-         {*/
-            Debug.Log("************TEST SUITE ENABLED");
+            // Debug.Log("************TEST SUITE ENABLED");
+            //IronSource.Agent.setMetaData("is_test_suite", "enable");
 
 
 
@@ -54,7 +47,7 @@ public class Ads : MonoBehaviour
 
             Debug.Log("************UNITY VERSION: " + IronSource.unityVersion());
             // SDK init
-            Debug.Log("************INITIALIZING AD AGENT " + appKey);
+            Debug.Log("************SDK INITIALIZATION BEGIN FOR AD AGENT " + appKey);
 
 
 
@@ -64,92 +57,72 @@ public class Ads : MonoBehaviour
             IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
             IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
             IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
-            IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
-            IronSourceBannerEvents.onAdScreenDismissedEvent += BannerOnAdScreenDismissedEvent;
-            IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
-
-        // }
-
+            //IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
+            //IronSourceBannerEvents.onAdScreenDismissedEvent += BannerOnAdScreenDismissedEvent;
+            //IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
+        }
 
     }
+    
+    //private void BannerOnAdLeftApplicationEvent(IronSourceAdInfo info)
+    //{
+    //    Debug.Log("**********PLAYER LEFT APP AD LEFT EVENT: " + info.ToString());
 
-    private void BannerOnAdLeftApplicationEvent(IronSourceAdInfo info)
-    {
-        Debug.Log("**********PLAYER LEFT APP AD LEFT EVENT: " + info.ToString());
+    //}
 
-    }
+    //private void BannerOnAdScreenDismissedEvent(IronSourceAdInfo info)
+    //{
+    //    Debug.Log("**********BANNER ON AD SCREEN DISMISSED EVENT: " + info.ToString());
 
-    private void BannerOnAdScreenDismissedEvent(IronSourceAdInfo info)
-    {
-        Debug.Log("**********BANNER ON AD SCREEN DISMISSED EVENT: " + info.ToString());
+    //}
 
-        bannerLoaded = false;
-    }
-
-    private void BannerOnAdScreenPresentedEvent(IronSourceAdInfo info)
-    {
-        Debug.Log("**********Banner Ad Screen Presented: " + info.ToString());
-    }
+    //private void BannerOnAdScreenPresentedEvent(IronSourceAdInfo info)
+    //{
+    //    Debug.Log("**********Banner Ad Screen Presented: " + info.ToString());
+    //}
 
     private void BannerOnAdLoadedEvent(IronSourceAdInfo info)
     {
-        Debug.Log("**********Banner Load Ad Succeeded: " + info.ToString());
-        bannerLoaded = true;
-        //bannerLoading = false;
-        //IronSource.Agent.displayBanner();
-        Debug.Log("**********Hiding Banner***********");
+       // Debug.Log("**********Banner Load Ad Succeeded: " + info.ToString());
+        PlayerPrefs.SetString("bannerLoaded", "true");
+
+       // Debug.Log("**********Hiding Banner***********");
+        PlayerPrefs.SetString("bannerHidden", "true");
+
         IronSource.Agent.hideBanner();
     }
 
     private void BannerOnAdLoadFailedEvent(IronSourceError error)
     {
-        Debug.Log("**********Banner Load Ad Failed: " + error.ToString());
-
-        //bannerLoading = false;
-       //bannerLoaded = false;
-
-        //if (!bannerLoaded && !bannerLoading && GameEndMenu.gameEnded == true)
-        //{
-         //   bannerLoading = true;
+        //Debug.Log("**********Banner Load Ad Failed: " + error.ToString());
        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Game_Over");
-
-        //}
+        PlayerPrefs.SetString("bannerLoaded","false");
     }
 
 
 
-    private void SdkInitializationCompletedEvent()
+     private void SdkInitializationCompletedEvent()
     {
-        IronSource.Agent.getAdvertiserId();
+        //IronSource.Agent.launchTestSuite();
+        //Debug.Log("************SDK INITIALIZATION COMPLETE");
 
-        Debug.Log("************SDK INITIALIZATION COMPLETE");
-
-        Debug.Log("************LOADING BANNER");
+        //IronSource.Agent.getAdvertiserId();
+        PlayerPrefs.SetString("sdkInitComplete", "true");
+        //Debug.Log("************LOADING BANNER SDK INIT");
 #if UNITY_ANDROID
         IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_Android");
 #elif UNITY_IOS
         IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_iOS");
 #endif
-        //adsInitComplete = true;
-        //PlayerPrefs.SetString("adsInitialized", "true");
+
     }
 
-    void OnApplicationPause(bool isPaused)
-   {
-        Debug.Log("**********ON APPLICATION PAUSE EVENT CALLED***************");
 
-        // if (!isPaused)
-        // {
-        //     IronSource.Agent.displayBanner();
-        // }
-    }
 
 
     private void OnApplicationQuit()
     {
-        Debug.Log("**********ON APPLICATION QUIT EVENT CALLED***************");
-
-        //PlayerPrefs.SetString("adsInitialized", "false");
+       // Debug.Log("**********ON APPLICATION QUIT EVENT CALLED***************");
         IronSource.Agent.destroyBanner();
 
     }
@@ -159,62 +132,18 @@ public class Ads : MonoBehaviour
     void Update()
     {
 
-        if(GameEndMenu.gameEnded == true && bannerLoaded == true)
+        if (GameEndMenu.gameEnded == true && PlayerPrefs.GetString("sdkInitComplete") == "true" && PlayerPrefs.GetString("bannerLoaded") == "true" && PlayerPrefs.GetString("bannerHidden") == "true")
         {
-            Debug.Log("************DISPLAYING BANNER*********");
+           // Debug.Log("************DISPLAYING BANNER*********");
             IronSource.Agent.displayBanner();
-        }else if(GameEndMenu.gameEnded == false && bannerLoaded == true)
-        {
-            Debug.Log("************HIDING BANNER************");
-            IronSource.Agent.hideBanner();
+            PlayerPrefs.SetString("bannerHidden", "false");
         }
-
-
-
-
-
-
-
-
-
-
-
-        /*        if (GameEndMenu.gameEnded == true && adsInitComplete == true && !bannerLoading ) 
-                {
-
-        #if UNITY_ANDROID
-
-                    Debug.Log("************LOADING BANNER");
-                    IronSource.Agent.getPlacementInfo("Jump_Man_Android");
-                    if(!bannerLoaded){
-                        bannerLoading = true;
-                        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_Android");
-                    }else{
-                        IronSource.Agent.displayBanner();
-                    }
-
-        #elif UNITY_IOS
-
-                    Debug.Log("************LOADING BANNER");
-                    IronSource.Agent.getPlacementInfo("Jump_Man_iOS");
-                    if (!bannerLoaded)
-                    {
-                        bannerLoading = true;
-                        IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM, "Jump_Man_iOS");
-                    }
-                    else
-                    {
-                        IronSource.Agent.displayBanner();
-                    }
-        #endif
-
-                }
-                else if(GameEndMenu.gameEnded == false ) // && PlayerPrefs.GetString("adsInitializationComplete", "false") == "true")
-                {
-                    IronSource.Agent.hideBanner();
-
-                }*/
-
+        else if(GameEndMenu.gameEnded == false && PlayerPrefs.GetString("sdkInitComplete") == "true" && PlayerPrefs.GetString("bannerLoaded") == "true" && PlayerPrefs.GetString("bannerHidden") == "false")
+        {
+            //Debug.Log("************HIDING BANNER************");
+            IronSource.Agent.hideBanner();
+            PlayerPrefs.SetString("bannerHidden", "true");
+        }
 
     }
 

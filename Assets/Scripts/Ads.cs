@@ -25,11 +25,7 @@ public class Ads : MonoBehaviour
     }
 
 
-    //void Awake()
-    //{
-    //    Debug.Log("**********************CALLING AWAKE() AND INITIALIZING AD EVENTS****************************");
-    //    IronSource.Agent.getAdvertiserId();
-    //}
+
     void Start()
     {
 
@@ -57,29 +53,11 @@ public class Ads : MonoBehaviour
             IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
             IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
             IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
-            //IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
-            //IronSourceBannerEvents.onAdScreenDismissedEvent += BannerOnAdScreenDismissedEvent;
-            //IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
+
         }
 
     }
     
-    //private void BannerOnAdLeftApplicationEvent(IronSourceAdInfo info)
-    //{
-    //    Debug.Log("**********PLAYER LEFT APP AD LEFT EVENT: " + info.ToString());
-
-    //}
-
-    //private void BannerOnAdScreenDismissedEvent(IronSourceAdInfo info)
-    //{
-    //    Debug.Log("**********BANNER ON AD SCREEN DISMISSED EVENT: " + info.ToString());
-
-    //}
-
-    //private void BannerOnAdScreenPresentedEvent(IronSourceAdInfo info)
-    //{
-    //    Debug.Log("**********Banner Ad Screen Presented: " + info.ToString());
-    //}
 
     private void BannerOnAdLoadedEvent(IronSourceAdInfo info)
     {
@@ -117,7 +95,15 @@ public class Ads : MonoBehaviour
 
     }
 
+    void OnApplicationPause(bool isPaused)
+    {
+       // Debug.Log("**********ON APPLICATION PAUSE EVENT CALLED***************");
 
+         if (!isPaused)
+         {
+             IronSource.Agent.displayBanner();
+        }
+    }
 
 
     private void OnApplicationQuit()

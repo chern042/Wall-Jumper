@@ -71,9 +71,10 @@ public class ObstacleSpawner : MonoBehaviour
                     obBody.bodyType = RigidbodyType2D.Static;
                 }
 
-                obBody.transform.position = new Vector3(newXPos, obBody.transform.position.y, obBody.transform.position.z);
 
-                if (Random.Range(0, 3) == 0 && !isStatic)
+                obBody.transform.position = new Vector3(newXPos, obBody.transform.position.y, obBody.transform.position.z);
+                int randInt = Random.Range(0, 6);
+                if (randInt == 0 && !isStatic)
                 {
                     if (obstacleWidth >= 7f)
                     {
@@ -83,6 +84,24 @@ public class ObstacleSpawner : MonoBehaviour
                     else
                     {
                         obstacle.GetComponent<IsRotated>().isRotated = true;
+                    }
+                }else if (!isStatic && randInt == 1)
+                {
+                    obBody.transform.position = new Vector3(0, obBody.transform.position.y, obBody.transform.position.z);
+
+                    obBody.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+                }else if (!isStatic && randInt == 2)
+                {
+                    obBody.transform.position = new Vector3(0, obBody.transform.position.y, obBody.transform.position.z);
+
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        obBody.transform.eulerAngles = new Vector3(0f, 0f, 45f);
+                    }
+                    else
+                    {
+                        obBody.transform.eulerAngles = new Vector3(0f, 0f, -45f);
+
                     }
                 }
 
